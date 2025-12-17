@@ -7,7 +7,13 @@
   <meta name="Generator" content="Cocoa HTML Writer">
   <meta name="CocoaVersion" content="2575.7">
   <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 24.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 24.0px Helvetica; min-height: 29.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 25.0px Times; color: #519deb; -webkit-text-stroke: #519deb}
+    span.s1 {font-kerning: none; color: #000000; -webkit-text-stroke: 0px #000000}
+    span.s2 {font-kerning: none; color: #9ba2b1; -webkit-text-stroke: 0px #9ba2b1}
+    span.s3 {font-kerning: none}
+    span.s4 {font-kerning: none; color: #88b966; -webkit-text-stroke: 0px #88b966}
   </style>
 </head>
 <body>
@@ -24,7 +30,482 @@
 <p class="p1"><span class="Apple-converted-space">  </span>&lt;body&gt;</p>
 <p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="root"&gt;&lt;/div&gt;</p>
 <p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Include your JSX file --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script type="text/babel" src=“eu-ai-act-calculator.jsx"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script type="text/babel"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">import React, { useState, useEffect } from 'react';</p>
+<p class="p1">import { CheckCircle, AlertTriangle, XCircle, FileText, Download, ArrowRight, ArrowLeft } from 'lucide-react';</p>
+<p class="p2"><br></p>
+<p class="p1">const EUAIActCalculator = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [currentQuestion, setCurrentQuestion] = useState(0);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [answers, setAnswers] = useState({});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [showResults, setShowResults] = useState(false);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [email, setEmail] = useState('');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [name, setName] = useState('');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [company, setCompany] = useState('');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>// Article 10 Questions with weighted scoring</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const questions = [</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{</p>
+<p class="p1"><span class="Apple-converted-space">      </span>id: 'data_governance',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>category: 'Data Governance (Article 10.2)',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>question: 'Do you maintain comprehensive records of all training data used in your AI systems, including data sources, acquisition dates, and relevance assessments?',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>weight: 15,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>options: [</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 100, label: 'Yes - Full compliance', description: 'Complete records with regular audits' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 50, label: 'Partial compliance', description: 'Some records exist but gaps remain' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 0, label: 'No - Not implemented', description: 'No systematic record-keeping in place' }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>]</p>
+<p class="p1"><span class="Apple-converted-space">    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{</p>
+<p class="p1"><span class="Apple-converted-space">      </span>id: 'data_quality',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>category: 'Training Data Quality (Article 10.3)',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>question: 'Do you have documented processes for examining training data for biases, errors, and gaps that could lead to discriminatory outcomes?',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>weight: 20,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>options: [</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 100, label: 'Yes - Full compliance', description: 'Regular bias audits with documented remediation' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 50, label: 'Partial compliance', description: 'Some bias testing but not systematic' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 0, label: 'No - Not implemented', description: 'No bias detection processes' }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>]</p>
+<p class="p1"><span class="Apple-converted-space">    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{</p>
+<p class="p1"><span class="Apple-converted-space">      </span>id: 'data_relevance',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>category: 'Data Governance (Article 10.2)',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>question: 'Can you demonstrate that your training data is relevant, representative, and free from errors for the intended AI system purpose?',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>weight: 15,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>options: [</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 100, label: 'Yes - Full compliance', description: 'Documented validation of data quality' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 50, label: 'Partial compliance', description: 'Some validation but incomplete' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 0, label: 'No - Not implemented', description: 'No data validation process' }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>]</p>
+<p class="p1"><span class="Apple-converted-space">    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{</p>
+<p class="p1"><span class="Apple-converted-space">      </span>id: 'special_categories',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>category: 'Data Governance (Article 10.2)',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>question: 'Do you have specific procedures for handling special category data (sensitive personal data) in AI training sets?',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>weight: 15,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>options: [</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 100, label: 'Yes - Full compliance', description: 'GDPR Article 9 compliant procedures' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 50, label: 'Partial compliance', description: 'Some procedures but not comprehensive' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 0, label: 'No - Not implemented', description: 'No special category data procedures' }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>]</p>
+<p class="p1"><span class="Apple-converted-space">    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{</p>
+<p class="p1"><span class="Apple-converted-space">      </span>id: 'data_provenance',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>category: 'Data Governance (Article 10.2)',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>question: 'Can you trace the origin and transformation history of all data used to train your AI models?',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>weight: 10,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>options: [</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 100, label: 'Yes - Full compliance', description: 'Complete data lineage tracking' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 50, label: 'Partial compliance', description: 'Some lineage tracking with gaps' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 0, label: 'No - Not implemented', description: 'No data lineage tracking' }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>]</p>
+<p class="p1"><span class="Apple-converted-space">    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{</p>
+<p class="p1"><span class="Apple-converted-space">      </span>id: 'validation_testing',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>category: 'Training Data Quality (Article 10.3)',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>question: 'Do you perform validation and testing of training datasets before deploying AI systems to production?',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>weight: 15,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>options: [</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 100, label: 'Yes - Full compliance', description: 'Systematic validation with test datasets' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 50, label: 'Partial compliance', description: 'Ad-hoc testing without formal process' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 0, label: 'No - Not implemented', description: 'No pre-deployment validation' }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>]</p>
+<p class="p1"><span class="Apple-converted-space">    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{</p>
+<p class="p1"><span class="Apple-converted-space">      </span>id: 'documentation',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>category: 'Technical Documentation (Article 10.5)',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>question: 'Do you maintain technical documentation describing your AI system\'s training methodology, data processing steps, and model architecture?',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>weight: 10,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>options: [</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 100, label: 'Yes - Full compliance', description: 'Comprehensive technical documentation' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 50, label: 'Partial compliance', description: 'Basic documentation with gaps' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 0, label: 'No - Not implemented', description: 'No technical documentation' }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>]</p>
+<p class="p1"><span class="Apple-converted-space">    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{</p>
+<p class="p1"><span class="Apple-converted-space">      </span>id: 'ongoing_monitoring',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>category: 'Training Data Quality (Article 10.3)',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>question: 'Do you have processes to monitor training data quality and detect degradation or drift over time?',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>weight: 15,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>options: [</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 100, label: 'Yes - Full compliance', description: 'Automated monitoring with alerts' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 50, label: 'Partial compliance', description: 'Manual periodic reviews' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 0, label: 'No - Not implemented', description: 'No ongoing monitoring' }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>]</p>
+<p class="p1"><span class="Apple-converted-space">    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{</p>
+<p class="p1"><span class="Apple-converted-space">      </span>id: 'third_party_data',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>category: 'Data Governance (Article 10.2)',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>question: 'If using third-party training data, can you verify its quality, provenance, and compliance with EU AI Act requirements?',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>weight: 10,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>options: [</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 100, label: 'Yes - Full compliance', description: 'Vendor attestations and audits' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 50, label: 'Partial compliance', description: 'Some verification but incomplete' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 0, label: 'No - Not implemented', description: 'No third-party data verification' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 100, label: 'Not applicable', description: 'We don\'t use third-party data' }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>]</p>
+<p class="p1"><span class="Apple-converted-space">    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{</p>
+<p class="p1"><span class="Apple-converted-space">      </span>id: 'access_controls',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>category: 'Data Governance (Article 10.2)',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>question: 'Do you have access controls and audit trails for who can modify training datasets and model parameters?',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>weight: 10,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>options: [</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 100, label: 'Yes - Full compliance', description: 'Role-based access with full audit logs' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 50, label: 'Partial compliance', description: 'Basic access controls without complete auditing' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 0, label: 'No - Not implemented', description: 'No access controls or audit trails' }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>]</p>
+<p class="p1"><span class="Apple-converted-space">    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{</p>
+<p class="p1"><span class="Apple-converted-space">      </span>id: 'update_procedures',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>category: 'Technical Documentation (Article 10.5)',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>question: 'Do you have documented procedures for updating training data and retraining models when issues are discovered?',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>weight: 10,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>options: [</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 100, label: 'Yes - Full compliance', description: 'Formal change management process' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 50, label: 'Partial compliance', description: 'Informal update procedures' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 0, label: 'No - Not implemented', description: 'No update procedures' }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>]</p>
+<p class="p1"><span class="Apple-converted-space">    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{</p>
+<p class="p1"><span class="Apple-converted-space">      </span>id: 'compliance_evidence',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>category: 'Technical Documentation (Article 10.5)',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>question: 'Can you produce audit-ready evidence of Article 10 compliance for regulatory review within 30 days?',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>weight: 15,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>options: [</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 100, label: 'Yes - Full compliance', description: 'Documentation ready for immediate export' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 50, label: 'Partial compliance', description: 'Could compile evidence with significant effort' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ value: 0, label: 'No - Not implemented', description: 'No compliance documentation system' }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>]</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const calculateScore = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let totalWeight = 0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let weightedScore = 0;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>questions.forEach(q =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (answers[q.id] !== undefined) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>totalWeight += q.weight;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>weightedScore += (answers[q.id] / 100) * q.weight;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>return totalWeight &gt; 0 ? Math.round((weightedScore / totalWeight) * 100) : 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const getCategoryScores = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const categories = {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>'Data Governance (Article 10.2)': { score: 0, weight: 0, questions: 0 },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>'Training Data Quality (Article 10.3)': { score: 0, weight: 0, questions: 0 },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>'Technical Documentation (Article 10.5)': { score: 0, weight: 0, questions: 0 }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>questions.forEach(q =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (answers[q.id] !== undefined) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>categories[q.category].score += (answers[q.id] / 100) * q.weight;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>categories[q.category].weight += q.weight;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>categories[q.category].questions += 1;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>return Object.entries(categories).map(([name, data]) =&gt; ({</p>
+<p class="p1"><span class="Apple-converted-space">      </span>name,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>score: data.weight &gt; 0 ? Math.round((data.score / data.weight) * 100) : 0,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>questions: data.questions</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const handleAnswer = (value) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setAnswers({ ...answers, [questions[currentQuestion].id]: value });</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const nextQuestion = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (currentQuestion &lt; questions.length - 1) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>setCurrentQuestion(currentQuestion + 1);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>setShowResults(true);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const prevQuestion = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (currentQuestion &gt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>setCurrentQuestion(currentQuestion - 1);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const getRiskLevel = (score) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (score &gt;= 80) return { level: 'LOW RISK', color: 'text-green-600', bgColor: 'bg-green-100', icon: CheckCircle };</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (score &gt;= 60) return { level: 'MODERATE RISK', color: 'text-orange-600', bgColor: 'bg-orange-100', icon: AlertTriangle };</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return { level: 'HIGH RISK', color: 'text-red-600', bgColor: 'bg-red-100', icon: XCircle };</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const progress = ((currentQuestion + 1) / questions.length) * 100;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const score = calculateScore();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const risk = getRiskLevel(score);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const RiskIcon = risk.icon;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (showResults) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const categoryScores = getCategoryScores();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div className="min-h-screen bg-gray-50 py-12 px-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="max-w-4xl mx-auto"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{/* Overall Score */}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className={`${risk.bgColor} rounded-2xl p-8 shadow-lg mb-6`}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="text-center mb-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="inline-block bg-white px-4 py-2 rounded-full text-sm font-semibold mb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ASSESSMENT COMPLETE</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;h2 className="text-3xl font-bold text-gray-900 mb-2"&gt;Your Readiness Score&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="text-7xl font-bold mb-4" style={{ color: risk.color.replace('text-', '') }}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{score}%</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className={`inline-flex items-center gap-2 ${risk.bgColor} px-4 py-2 rounded-lg`}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;RiskIcon className="w-5 h-5" style={{ color: risk.color.replace('text-', '') }} /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;span className={`font-semibold ${risk.color}`}&gt;{risk.level}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p className="text-center text-gray-700 max-w-2xl mx-auto"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>{score &gt;= 80 &amp;&amp; "Your organization has strong Article 10 compliance foundations. Focus on maintaining and documenting your processes."}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>{score &gt;= 60 &amp;&amp; score &lt; 80 &amp;&amp; "Your organization has made progress toward EU AI Act compliance, but significant gaps remain that could result in penalties when enforcement begins in August 2026."}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>{score &lt; 60 &amp;&amp; "Your organization faces significant compliance gaps that require immediate attention. Without action, you may be exposed to fines up to £24M when EU AI Act enforcement begins in August 2026."}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">          </span>{/* Category Breakdown */}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="bg-white rounded-xl shadow-lg p-8 mb-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h3 className="text-2xl font-bold text-gray-900 mb-6"&gt;Compliance Breakdown&lt;/h3&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="space-y-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>{categoryScores.map((cat) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const catRisk = getRiskLevel(cat.score);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const CatIcon = catRisk.icon;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div key={cat.name}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="flex items-center justify-between mb-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;div className="flex items-center gap-3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;CatIcon className="w-6 h-6" style={{ color: catRisk.color.replace('text-', '') }} /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span className="font-semibold text-gray-900"&gt;{cat.name}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;span className={`text-2xl font-bold ${catRisk.color}`}&gt;{cat.score}%&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="w-full bg-gray-200 rounded-full h-3 mb-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>&lt;div<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>className="h-3 rounded-full transition-all duration-500"</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>style={{<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                          </span>width: `${cat.score}%`,</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>backgroundColor: catRisk.color.replace('text-', '')</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}}</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p className="text-sm text-gray-600 ml-9"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>{cat.score &gt;= 80 &amp;&amp; "Strong compliance foundation. Maintain current processes."}</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>{cat.score &gt;= 60 &amp;&amp; cat.score &lt; 80 &amp;&amp; "Needs improvement in documentation and systematic processes."}</p>
+<p class="p1"><span class="Apple-converted-space">                      </span>{cat.score &lt; 60 &amp;&amp; "Critical gap. Requires immediate attention and investment."}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>);</p>
+<p class="p1"><span class="Apple-converted-space">              </span>})}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">          </span>{/* AIGS Solution Mapping */}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="bg-indigo-50 rounded-xl p-8 mb-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h3 className="text-2xl font-bold text-gray-900 mb-4"&gt;How AIGS Closes Your Gaps&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="space-y-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>{score &lt; 80 &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="bg-white rounded-lg p-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="font-semibold text-gray-900 mb-2"&gt;🎯 Real-Time Behavioral Monitoring&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;p className="text-gray-700 text-sm"&gt;AIGS Guardian Proxy monitors every AI agent action in real-time, creating the continuous oversight required by Article 10. Automated compliance evidence generation ensures audit readiness.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>{categoryScores.find(c =&gt; c.name.includes('Data Governance'))?.score &lt; 80 &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="bg-white rounded-lg p-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="font-semibold text-gray-900 mb-2"&gt;📊 Automated Data Governance&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;p className="text-gray-700 text-sm"&gt;Complete data lineage tracking and access controls. AIGS automatically logs all training data usage, modifications, and access patterns—bringing you from {categoryScores.find(c =&gt; c.name.includes('Data Governance'))?.score}% to 95% compliance.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>{categoryScores.find(c =&gt; c.name.includes('Training Data Quality'))?.score &lt; 80 &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="bg-white rounded-lg p-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="font-semibold text-gray-900 mb-2"&gt;🔍 Continuous Quality Monitoring&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;p className="text-gray-700 text-sm"&gt;Detect bias, drift, and degradation before they become violations. Real-time anomaly detection flags quality issues immediately—closing your {100 - (categoryScores.find(c =&gt; c.name.includes('Training Data Quality'))?.score || 0)}% gap.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>{categoryScores.find(c =&gt; c.name.includes('Technical Documentation'))?.score &lt; 80 &amp;&amp; (</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="bg-white rounded-lg p-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="font-semibold text-gray-900 mb-2"&gt;📁 Instant Audit Trails&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>&lt;p className="text-gray-700 text-sm"&gt;One-click export of complete compliance documentation. AIGS generates audit-ready reports showing all AI behavior, policy checks, and anomaly detection—ready for regulatory review in seconds, not weeks.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>)}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">          </span>{/* Email Capture */}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="bg-white rounded-xl shadow-lg p-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="text-center mb-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;FileText className="w-16 h-16 text-indigo-600 mx-auto mb-4" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;h3 className="text-2xl font-bold text-gray-900 mb-2"&gt;Get Your Detailed Report&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;p className="text-gray-600"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>Receive a comprehensive PDF with your full compliance analysis, 90-day action plan, and AIGS solution mapping.</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="max-w-md mx-auto space-y-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;input<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>type="text"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>placeholder="Your name"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>value={name}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>onChange={(e) =&gt; setName(e.target.value)}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-600 focus:outline-none"</p>
+<p class="p1"><span class="Apple-converted-space">              </span>/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;input<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>type="email"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>placeholder="Work email"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>value={email}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>onChange={(e) =&gt; setEmail(e.target.value)}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-600 focus:outline-none"</p>
+<p class="p1"><span class="Apple-converted-space">              </span>/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;input<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>type="text"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>placeholder="Company name"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>value={company}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>onChange={(e) =&gt; setCompany(e.target.value)}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-600 focus:outline-none"</p>
+<p class="p1"><span class="Apple-converted-space">              </span>/&gt;</p>
+<p class="p2"><span class="Apple-converted-space">              </span></p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;button<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>onClick={() =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>// TODO: Connect to your email system here</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>// For now, this shows what data you'd send</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>console.log('Lead captured:', { name, email, company, score, answers, categoryScores });</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>alert('Report generation coming soon! Your results have been saved.');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>disabled={!name || !email || !company}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-4 px-8 rounded-lg text-lg transition-colors flex items-center justify-center gap-2"</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;Download className="w-5 h-5" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>Download Full Report</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/button&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;p className="text-xs text-gray-500 text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>We'll also send you updates on EU AI Act enforcement and compliance best practices. Unsubscribe anytime.</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">          </span>{/* CTA */}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="text-center mt-8 p-6 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl text-white"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p className="text-lg font-semibold mb-2"&gt;Ready to close your compliance gaps?&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p className="mb-4"&gt;Book a 30-minute consultation with our compliance experts&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button className="bg-white text-indigo-600 hover:bg-gray-100 font-semibold py-3 px-8 rounded-lg transition-colors"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>Schedule Demo</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const currentQ = questions[currentQuestion];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const selectedAnswer = answers[currentQ.id];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>return (</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div className="min-h-screen bg-gray-50 py-12 px-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div className="max-w-4xl mx-auto"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{/* Progress Header */}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="bg-white rounded-xl shadow-lg mb-6 p-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="flex items-center justify-between mb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;h2 className="text-2xl font-bold text-gray-900"&gt;EU AI Act Article 10 Assessment&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;p className="text-gray-600"&gt;Question {currentQuestion + 1} of {questions.length}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="text-right"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="text-3xl font-bold text-indigo-600"&gt;{score}%&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;p className="text-sm text-gray-600"&gt;Current Score&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">          </span></p>
+<p class="p1"><span class="Apple-converted-space">          </span>{/* Progress Bar */}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="w-full bg-gray-200 rounded-full h-3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">              </span>className="bg-indigo-600 h-3 rounded-full transition-all duration-500"</p>
+<p class="p1"><span class="Apple-converted-space">              </span>style={{ width: `${progress}%` }}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;p className="text-sm text-gray-500 mt-2"&gt;{Math.round(progress)}% complete&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>{/* Question Card */}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="bg-white rounded-xl shadow-lg p-8 mb-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="mb-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold mb-3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>{currentQ.category}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h3 className="text-xl font-semibold text-gray-900 mb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>{currentQ.question}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="space-y-3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{currentQ.options.map((option) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;button</p>
+<p class="p1"><span class="Apple-converted-space">                </span>key={option.value}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>onClick={() =&gt; handleAnswer(option.value)}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>className={`w-full text-left p-4 border-2 rounded-lg transition-all ${</p>
+<p class="p1"><span class="Apple-converted-space">                  </span>selectedAnswer === option.value</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>? 'border-indigo-600 bg-indigo-50'</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>: 'border-gray-200 hover:border-indigo-600 hover:bg-indigo-50'</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}`}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="font-semibold text-gray-900"&gt;{option.label}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p className="text-sm text-gray-600"&gt;{option.description}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="mt-6 flex gap-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">              </span>onClick={prevQuestion}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>disabled={currentQuestion === 0}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed text-gray-700 font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2"</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;ArrowLeft className="w-4 h-4" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>Previous</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">              </span>onClick={nextQuestion}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>disabled={selectedAnswer === undefined}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>className="flex-1 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2"</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>{currentQuestion === questions.length - 1 ? 'See Results' : 'Next Question'}</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;ArrowRight className="w-4 h-4" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>{/* Quick Stats */}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="grid grid-cols-3 gap-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>{getCategoryScores().map((cat) =&gt; (</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div key={cat.name} className="bg-white rounded-lg p-4 shadow text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className={`text-2xl font-bold ${getRiskLevel(cat.score).color}`}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{cat.score}%</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;p className="text-xs text-gray-600 mt-1"&gt;{cat.name.split(' (')[0]}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>))}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>);</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">export default EUAIActCalculator;</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s1">ReactDOM</span><span class="s2">.</span><span class="s3">createRoot</span><span class="s2">(</span><span class="s3">document</span><span class="s2">.</span><span class="s3">getElementById</span><span class="s2">(</span><span class="s4">'root'</span><span class="s2">)).</span><span class="s3">render</span><span class="s2">(</span><span class="s3">&lt;</span><span class="s1">EUAIActCalculator </span><span class="s3">/&gt;</span><span class="s2">);</span></p>
+<p class="p1">&lt;/script&gt;</p>
 <p class="p1"><span class="Apple-converted-space">  </span>&lt;/body&gt;</p>
 <p class="p1">&lt;/html&gt;</p>
 </body>
