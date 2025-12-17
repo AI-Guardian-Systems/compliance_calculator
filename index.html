@@ -9,11 +9,26 @@
   <style type="text/css">
     p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 24.0px Helvetica}
     p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 24.0px Helvetica; min-height: 29.0px}
-    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 25.0px Times; color: #519deb; -webkit-text-stroke: #519deb}
-    span.s1 {font-kerning: none; color: #000000; -webkit-text-stroke: 0px #000000}
-    span.s2 {font-kerning: none; color: #9ba2b1; -webkit-text-stroke: 0px #9ba2b1}
-    span.s3 {font-kerning: none}
-    span.s4 {font-kerning: none; color: #88b966; -webkit-text-stroke: 0px #88b966}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 32.0px Times; -webkit-text-stroke: #000000}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 27.0px Times}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 28.0px Times}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 30.0px Times}
+    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 25.0px Times; color: #519deb; -webkit-text-stroke: #519deb}
+    span.s1 {font-kerning: none; color: #b85dd5; -webkit-text-stroke: 0px #b85dd5}
+    span.s2 {font-kerning: none}
+    span.s3 {font-kerning: none; color: #9ba2b1; -webkit-text-stroke: 0px #9ba2b1}
+    span.s4 {font-kerning: none; color: #519deb; -webkit-text-stroke: 0px #519deb}
+    span.s5 {font: 19.0px Times; font-kerning: none; color: #9ba2b1; -webkit-text-stroke: 0px #9ba2b1}
+    span.s6 {font: 24.0px Helvetica}
+    span.s7 {font-kerning: none; color: #d65562; -webkit-text-stroke: 0px #d65562}
+    span.s8 {font-kerning: none; color: #c58853; -webkit-text-stroke: 0px #c58853}
+    span.s9 {font-kerning: none; color: #88b966; -webkit-text-stroke: 0px #88b966}
+    span.s10 {font-kerning: none; -webkit-text-stroke: 0px #000000}
+    span.s11 {font-kerning: none; color: #9ba2b1; -webkit-text-stroke: 0px #9ba2b1; text-shadow: 0.0px 1.0px 0.0px rgba(255, 255, 255, 0)}
+    span.s12 {font-kerning: none; color: #d65562; -webkit-text-stroke: 0px #d65562; text-shadow: 0.0px 1.0px 0.0px rgba(255, 255, 255, 0)}
+    span.s13 {font-kerning: none; color: #c58853; -webkit-text-stroke: 0px #c58853; text-shadow: 0.0px 1.0px 0.0px rgba(255, 255, 255, 0)}
+    span.s14 {font-kerning: none; color: #88b966; -webkit-text-stroke: 0px #88b966; text-shadow: 0.0px 1.0px 0.0px rgba(255, 255, 255, 0)}
+    span.s15 {font-kerning: none; color: #000000; -webkit-text-stroke: 0px #000000}
   </style>
 </head>
 <body>
@@ -32,9 +47,7 @@
 <p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Include your JSX file --&gt;</p>
 <p class="p1"><span class="Apple-converted-space">    </span>&lt;script type="text/babel"&gt;</p>
 <p class="p2"><br></p>
-<p class="p1">import React, { useState, useEffect } from 'react';</p>
-<p class="p1">import { CheckCircle, AlertTriangle, XCircle, FileText, Download, ArrowRight, ArrowLeft } from 'lucide-react';</p>
-<p class="p2"><br></p>
+<p class="p3"><span class="s1">const</span><span class="s2"> </span><span class="s3">{</span><span class="s2"> useState</span><span class="s3">,</span><span class="s2"> useEffect </span><span class="s3">}</span><span class="s2"> </span><span class="s4">=</span><span class="s2"> React</span><span class="s3">;</span></p>
 <p class="p1">const EUAIActCalculator = () =&gt; {</p>
 <p class="p1"><span class="Apple-converted-space">  </span>const [currentQuestion, setCurrentQuestion] = useState(0);</p>
 <p class="p1"><span class="Apple-converted-space">  </span>const [answers, setAnswers] = useState({});</p>
@@ -235,9 +248,9 @@
 <p class="p1"><span class="Apple-converted-space">  </span>};</p>
 <p class="p2"><br></p>
 <p class="p1"><span class="Apple-converted-space">  </span>const getRiskLevel = (score) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if (score &gt;= 80) return { level: 'LOW RISK', color: 'text-green-600', bgColor: 'bg-green-100', icon: CheckCircle };</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if (score &gt;= 60) return { level: 'MODERATE RISK', color: 'text-orange-600', bgColor: 'bg-orange-100', icon: AlertTriangle };</p>
-<p class="p1"><span class="Apple-converted-space">    </span>return { level: 'HIGH RISK', color: 'text-red-600', bgColor: 'bg-red-100', icon: XCircle };</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (score &gt;= 80) return { level: 'LOW RISK', color: 'text-green-600', bgColor: 'bg-green-100', icon: ✅ };</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (score &gt;= 60) return { level: 'MODERATE RISK', color: 'text-orange-600', bgColor: 'bg-orange-100', icon: ‼️ };</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return { level: 'HIGH RISK', color: 'text-red-600', bgColor: 'bg-red-100', icon: ❌ };</p>
 <p class="p1"><span class="Apple-converted-space">  </span>};</p>
 <p class="p2"><br></p>
 <p class="p1"><span class="Apple-converted-space">  </span>const progress = ((currentQuestion + 1) / questions.length) * 100;</p>
@@ -346,7 +359,7 @@
 <p class="p1"><span class="Apple-converted-space">          </span>{/* Email Capture */}</p>
 <p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="bg-white rounded-xl shadow-lg p-8"&gt;</p>
 <p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="text-center mb-6"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;FileText className="w-16 h-16 text-indigo-600 mx-auto mb-4" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;span className="w-16 h-16 text-indigo-600 mx-auto mb-4”&gt;<span class="s5">📂</span>&lt;/span&gt;</p>
 <p class="p1"><span class="Apple-converted-space">              </span>&lt;h3 className="text-2xl font-bold text-gray-900 mb-2"&gt;Get Your Detailed Report&lt;/h3&gt;</p>
 <p class="p1"><span class="Apple-converted-space">              </span>&lt;p className="text-gray-600"&gt;</p>
 <p class="p1"><span class="Apple-converted-space">                </span>Receive a comprehensive PDF with your full compliance analysis, 90-day action plan, and AIGS solution mapping.</p>
@@ -386,7 +399,7 @@
 <p class="p1"><span class="Apple-converted-space">                </span>disabled={!name || !email || !company}</p>
 <p class="p1"><span class="Apple-converted-space">                </span>className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-4 px-8 rounded-lg text-lg transition-colors flex items-center justify-center gap-2"</p>
 <p class="p1"><span class="Apple-converted-space">              </span>&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;Download className="w-5 h-5" /&gt;</p>
+<p class="p4"><span class="s6"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s7">span </span><span class="s8">className</span><span class="s3">="</span><span class="s9">w-5 h-5</span><span class="s3">"&gt;</span><span class="s10">⬇️</span><span class="s3">&lt;/</span><span class="s7">span</span><span class="s3">&gt;</span></p>
 <p class="p1"><span class="Apple-converted-space">                </span>Download Full Report</p>
 <p class="p1"><span class="Apple-converted-space">              </span>&lt;/button&gt;</p>
 <p class="p2"><br></p>
@@ -472,7 +485,7 @@
 <p class="p1"><span class="Apple-converted-space">              </span>disabled={currentQuestion === 0}</p>
 <p class="p1"><span class="Apple-converted-space">              </span>className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed text-gray-700 font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2"</p>
 <p class="p1"><span class="Apple-converted-space">            </span>&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;ArrowLeft className="w-4 h-4" /&gt;</p>
+<p class="p5"><span class="s6"><span class="Apple-converted-space">              </span></span><span class="s11">&lt;</span><span class="s12">span </span><span class="s13">className</span><span class="s11">="</span><span class="s14">w-4 h-4</span><span class="s11">"&gt;⬅️&lt;/</span><span class="s12">span</span><span class="s11">&gt;</span></p>
 <p class="p1"><span class="Apple-converted-space">              </span>Previous</p>
 <p class="p1"><span class="Apple-converted-space">            </span>&lt;/button&gt;</p>
 <p class="p1"><span class="Apple-converted-space">            </span>&lt;button<span class="Apple-converted-space"> </span></p>
@@ -481,7 +494,7 @@
 <p class="p1"><span class="Apple-converted-space">              </span>className="flex-1 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2"</p>
 <p class="p1"><span class="Apple-converted-space">            </span>&gt;</p>
 <p class="p1"><span class="Apple-converted-space">              </span>{currentQuestion === questions.length - 1 ? 'See Results' : 'Next Question'}</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;ArrowRight className="w-4 h-4" /&gt;</p>
+<p class="p6"><span class="s6"><span class="Apple-converted-space">              </span></span><span class="s3">&lt;</span><span class="s7">span </span><span class="s8">className</span><span class="s3">="</span><span class="s9">w-4 h-4</span><span class="s3">"&gt;</span><span class="s10">➡️</span><span class="s3">&lt;/</span><span class="s7">span</span><span class="s3">&gt;</span></p>
 <p class="p1"><span class="Apple-converted-space">            </span>&lt;/button&gt;</p>
 <p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
 <p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
@@ -504,7 +517,7 @@
 <p class="p2"><br></p>
 <p class="p1">export default EUAIActCalculator;</p>
 <p class="p2"><br></p>
-<p class="p3"><span class="s1">ReactDOM</span><span class="s2">.</span><span class="s3">createRoot</span><span class="s2">(</span><span class="s3">document</span><span class="s2">.</span><span class="s3">getElementById</span><span class="s2">(</span><span class="s4">'root'</span><span class="s2">)).</span><span class="s3">render</span><span class="s2">(</span><span class="s3">&lt;</span><span class="s1">EUAIActCalculator </span><span class="s3">/&gt;</span><span class="s2">);</span></p>
+<p class="p7"><span class="s15">ReactDOM</span><span class="s3">.</span><span class="s2">createRoot</span><span class="s3">(</span><span class="s2">document</span><span class="s3">.</span><span class="s2">getElementById</span><span class="s3">(</span><span class="s9">'root'</span><span class="s3">)).</span><span class="s2">render</span><span class="s3">(</span><span class="s2">&lt;</span><span class="s15">EUAIActCalculator </span><span class="s2">/&gt;</span><span class="s3">);</span></p>
 <p class="p1">&lt;/script&gt;</p>
 <p class="p1"><span class="Apple-converted-space">  </span>&lt;/body&gt;</p>
 <p class="p1">&lt;/html&gt;</p>
